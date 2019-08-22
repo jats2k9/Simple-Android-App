@@ -3,4 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="user_img">user_img</string>
     <string name="user_name">User Name</string>
+    <string name="full_name">Full Name</string>
+    <string name="job">Job</string>
+    <string name="create">Create</string>
 </resources>
