@@ -12,13 +12,13 @@ import java.net.URL;
 
 public class NetworkUtil {
     public static String getJSON(String url) {
-        HttpURLConnection con = null;
+        HttpURLConnection conn = null;
         try {
             URL u = new URL(url);
-            con = (HttpURLConnection) u.openConnection();
-            con.connect();
+            conn = (HttpURLConnection) u.openConnection();
+            conn.connect();
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -30,9 +30,9 @@ public class NetworkUtil {
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {
-            if (con != null) {
+            if (conn != null) {
                 try {
-                    con.disconnect();
+                    conn.disconnect();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -62,4 +62,5 @@ public class NetworkUtil {
         }
         return null;
     }
+
 }

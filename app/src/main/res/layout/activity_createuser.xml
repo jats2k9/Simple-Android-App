@@ -28,6 +28,7 @@
         android:hint="@string/job" />
 
     <Button
+        android:id="@+id/create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/job"

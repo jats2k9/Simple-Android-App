@@ -2,10 +2,12 @@ package com.users.async;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.users.R;
 import com.users.adapter.UsersAdapter;
 import com.users.model.User;
 import com.users.utils.NetworkUtil;
@@ -46,6 +48,11 @@ public class FetchDataTask extends AsyncTask<String, Integer, UsersAdapter> {
                 JSONObject userJson = jsonArray.getJSONObject(i);
 
                 Bitmap avatar = NetworkUtil.getBitmapFromURL(userJson.getString("avatar"));
+
+                if (avatar == null) {
+                    avatar = BitmapFactory.decodeResource(contextWeakReference.get().getResources(),
+                            R.drawable.ic_user);
+                }
 
                 User user = new User(userJson.getString("first_name") +
                         " " +
