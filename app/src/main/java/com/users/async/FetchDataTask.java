@@ -1,15 +1,20 @@
 package com.users.async;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.users.adapter.UsersAdapter;
 import com.users.model.User;
+import com.users.utils.NetworkUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FetchDataTask extends AsyncTask<String, Integer, UsersAdapter> {
@@ -27,8 +32,32 @@ public class FetchDataTask extends AsyncTask<String, Integer, UsersAdapter> {
 
     @Override
     protected UsersAdapter doInBackground(String... strings) {
-        //TODO implement logic to retrieve data from API
-        return new UsersAdapter(new ArrayList<User>(), contextWeakReference.get());
+
+        String response = NetworkUtil.getJSON(strings[0]);
+
+        JSONObject result;
+        try {
+            result = new JSONObject(response);
+
+            JSONArray jsonArray = result.getJSONArray("data");
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+
+                JSONObject userJson = jsonArray.getJSONObject(i);
+
+                Bitmap avatar = NetworkUtil.getBitmapFromURL(userJson.getString("avatar"));
+
+                User user = new User(userJson.getString("first_name") +
+                        " " +
+                        userJson.getString("last_name"), avatar);
+
+                usersData.add(user);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return new UsersAdapter(usersData, contextWeakReference.get());
     }
 
     @Override
