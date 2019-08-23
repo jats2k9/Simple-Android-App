@@ -2,7 +2,8 @@ package com.users.async;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,8 +51,7 @@ public class FetchDataTask extends AsyncTask<String, Integer, UsersAdapter> {
                 Bitmap avatar = NetworkUtil.getBitmapFromURL(userJson.getString("avatar"));
 
                 if (avatar == null) {
-                    avatar = BitmapFactory.decodeResource(contextWeakReference.get().getResources(),
-                            R.drawable.ic_user);
+                    avatar = getBitmap(R.drawable.ic_user);
                 }
 
                 User user = new User(userJson.getString("first_name") +
@@ -65,6 +65,17 @@ public class FetchDataTask extends AsyncTask<String, Integer, UsersAdapter> {
             e.printStackTrace();
         }
         return new UsersAdapter(usersData, contextWeakReference.get());
+    }
+
+    private Bitmap getBitmap(int drawableRes) {
+        Drawable drawable = contextWeakReference.get().getResources().getDrawable(drawableRes);
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 
     @Override

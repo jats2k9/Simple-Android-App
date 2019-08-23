@@ -24,6 +24,10 @@
 
         <activity android:name=".CreateUserActivity" />
 
+        <service
+            android:name=".async.PostUserTask"
+            android:exported="false" />
+
     </application>
 
 </manifest>
